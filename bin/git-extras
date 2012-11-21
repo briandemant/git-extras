@@ -1,17 +1,21 @@
 #!/bin/sh
 
-VERSION="1.7.0"
+VERSION="1.7.1"
 
 update() {
   local bin=$(which git-extras)
   local prefix=${bin%/*/*}
   local orig=$PWD
 
+  export PREFIX="$prefix"
+  which brew > /dev/null && export DESTDIR="$(brew --config | grep HOMEBREW_PREFIX | cut -d' ' -f2)"
+
+
   cd /tmp \
     && rm -fr ./git-extras \
     && git clone --depth 1 https://github.com/briandemant/git-extras.git \
     && cd git-extras \
-    && PREFIX="$prefix" make install \
+    && make install \
     && cd "$orig" \
     && echo "... updated git-extras $VERSION -> $(git extras --version)"
 }
