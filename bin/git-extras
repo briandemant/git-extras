@@ -8,7 +8,7 @@ update() {
   local orig=$PWD
 
   export PREFIX="$prefix"
-  which brew > /dev/null && export DESTDIR="$(brew --config | grep HOMEBREW_PREFIX | cut -d' ' -f2)"
+  which brew > /dev/null && export PREFIX="$(brew --config | grep HOMEBREW_PREFIX | cut -d' ' -f2)"
 
 
   cd /tmp \

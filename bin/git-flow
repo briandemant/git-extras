@@ -1,0 +1,40 @@
+#!/bin/sh
+section=$1
+name=$2
+command=$3
+no_remote=$4
+
+[ -z $no_remote ] || echo "--no-remote not implemented yet"
+
+if [ "$name" == "list" ] ; then
+	git branch -a | egrep $section
+	exit
+fi
+
+
+test -z $section && echo "<section> required." 1>&2 && exit 1
+test -z $name && echo "$section <name> required." 1>&2 && exit 1
+
+branch=$section/$name
+
+git dirty -q && echo "You are dirty!" && exit 1
+
+case "$command" in
+	fin|finish)
+		git checkout master
+		git merge --no-ff $branch && git delete-branch $branch
+		;;
+	delete)
+		git checkout master
+		git delete-branch $branch
+		;;
+	*)
+		# does the branch allredy exist?
+		if git branch | fgrep -w "$branch" > /dev/null; then
+			git checkout $branch
+		else
+			git checkout master
+			git create-branch $branch
+		fi
+		;;
+esac

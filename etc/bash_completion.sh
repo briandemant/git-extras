@@ -1,8 +1,22 @@
 # bash completion support for git-extras.
 
 _git_bug(){
-  __git_extras_workflow "bug"
+  __git_extras_workflow "bug" "${COMP_WORDS[COMP_CWORD-1]}"
 }
+
+_git_spike(){
+  __git_extras_workflow "spike" "${COMP_WORDS[COMP_CWORD-1]}"
+}
+
+_git_feature(){
+  __git_extras_workflow "feature" "$1" "$2"
+}
+
+__git_extras_workflow(){
+  [ "$1" == "$2" ] && __gitcomp "$(__git_heads | grep ^$1/ | sed s/^$1\\///g) list"
+  [ "$1" != "$2" ] && __gitcomp "finish delete"
+}
+
 
 _git_changelog(){
   __gitcomp "--list"
@@ -30,14 +44,6 @@ _git_delete_tag(){
 
 _git_extras(){
   __gitcomp "--version update"
-}
-
-__git_extras_workflow(){
-  __gitcomp "$(__git_heads | grep ^$1/ | sed s/^$1\\///g) finish"
-}
-
-_git_feature(){
-  __git_extras_workflow "feature"
 }
 
 _git_graft(){
