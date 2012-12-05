@@ -1,6 +1,18 @@
-#!/bin/sh
-if [[ $(git status --porcelain 2> /dev/null | head -n1) != "" ]] ; then
-	if [ "$1" != "-q" ]; then
+#!/bin/bash
+verbose=true 
+all=true
+
+while getopts  "qi" flag; do
+   [ "$flag" == "q" ] && verbose=false
+   [ "$flag" == "i" ] && all=false
+done  
+  
+$all && files=$(git status --porcelain 2> /dev/null | head -n1)
+$all || files=$(git status --porcelain 2> /dev/null  | egrep -v '^[\?]' | head -n1)
+  
+ 
+if [[ "$files" != "" ]] ; then
+	if $verbose; then 
 		echo "*"
 	fi
 	exit 0;
