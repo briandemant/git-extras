@@ -17,7 +17,7 @@ test -z $name && echo "$section <name> required." 1>&2 && exit 1
 
 branch=$section/$name
 
-git dirty -q && echo "You are dirty!" && exit 1
+git dirty -qi && echo "You are dirty!" && exit 1
 
 case "$command" in
 	fin|finish)
