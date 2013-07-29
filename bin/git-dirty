@@ -6,14 +6,18 @@ while getopts  "qi" flag; do
    [ "$flag" == "q" ] && verbose=false
    [ "$flag" == "i" ] && all=false
 done  
-  
-$all && files=$(git status --porcelain 2> /dev/null | head -n1)
-$all || files=$(git status --porcelain 2> /dev/null  | egrep -v '^[\?]' | head -n1)
-  
- 
-if [[ "$files" != "" ]] ; then
+
+new=$(git status --porcelain 2> /dev/null| egrep -v '^[\?]' | wc -l | egrep -o '[0-9]')
+changed=$(git status --porcelain 2> /dev/null| egrep  '^[\?]' | wc -l | egrep -o '[0-9]')
+
+
+if [[ "$changed" != "0" ]] && [[ "$new" != "0" ]]; then
 	if $verbose; then 
-		echo "*"
+		if $all; then 
+			echo "* ($changed/$new)"
+		else 
+			[[ "$changed" != "0" ]]  && echo "*"
+		fi
 	fi
 	exit 0;
 else
