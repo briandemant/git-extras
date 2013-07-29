@@ -16,7 +16,7 @@ if [[ "$changed" != "0" ]] || [[ "$new" != "0" ]]; then
 		if $all; then 
 			echo "* ($changed/$new)"
 		else 
-			[[ "$changed" != "0" ]]  && echo "*"
+			[[ "$changed" != "0" ]]  && echo "* ($changed/$new)"
 		fi
 	fi
 	exit 0;
