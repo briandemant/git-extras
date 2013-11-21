@@ -7,8 +7,8 @@ while getopts  "qi" flag; do
    [ "$flag" == "i" ] && all=false
 done  
 
-new=$(git status --porcelain 2> /dev/null| egrep '^[\?]' | wc -l | egrep -o '[0-9]')
-changed=$(git status --porcelain 2> /dev/null| egrep -v '^[\?]' | wc -l | egrep -o '[0-9]')
+new=$(git status --porcelain 2> /dev/null| egrep '^[\?]' | wc -l | egrep -o '[0-9]+')
+changed=$(git status --porcelain 2> /dev/null| egrep -v '^[\?]' | wc -l | egrep -o '[0-9]+')
 
 
 if [[ "$changed" != "0" ]] || [[ "$new" != "0" ]]; then
